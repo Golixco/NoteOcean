@@ -14,9 +14,8 @@ I have created the public GitHub repository named NoteOcean and I explicitly aut
 2. Mandatory First Actions
 Before writing any code:
 1. READ `Readfirst.md` in the project root completely. It is your master handoff document.
-2. Inspect the authoritative visual reference screenshot:
-   `NoteOcean/doc/reference/NoteOcean-ui-reference.png`
-   and review `docs/06-ui-reference-and-design-system.md`. Replicate this design faithfully.
+2. Inspect the design system specification:
+   Review `docs/06-ui-reference-and-design-system.md`. Replicate this design faithfully.
 3. Verify the Git working tree. Preserve all existing documentation and reference files.
 
 3. Core Architectural Rules (Simplified MVP)

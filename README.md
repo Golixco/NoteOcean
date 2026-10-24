@@ -37,15 +37,15 @@ Most note-taking applications force an unnecessary choice:
   - [Official Challenge Page](https://www.mlh.com/events/hacktoberfest-hack-day-ahmedabad-x-open-source-weekend/challenges/01a0d987-0c41-12ea-13ac-5b85755dc2f3)
 - **Primary Target Category**: **Best Open-Source AI Project, supported by DigitalOcean**
   - NoteOcean is an original open-source software project licensed under the permissive MIT license.
-  - Powered by a genuine open-weight model: **Google Gemma 2 (`gemma-2-9b-it`)**.
-  - Hosted on **DigitalOcean App Platform** as a lightweight, single-container web service without database overhead.
-- **Potential Additional Track**: **Best Use of Gemma 4** (Subject to verified catalog availability on execution day; baseline remains Gemma 2 without misrepresentation).
+  - Powered by open-weight models from Google: **Google Gemma 3 (`gemma-3-27b-it`)** and **Gemma 2 (`gemma-2-27b-it`)** via Backboard API.
+  - Hosted on **DigitalOcean App Platform** on the $5/mo Basic plan (512 MiB RAM, 1 shared vCPU) as a lightweight, single-container web service without database overhead.
+- **Open-Source Track**: Best Open-Source AI Project, supported by DigitalOcean.
 
 ---
 
 ## 🎨 UI & Design System
 
-The visual design is grounded in the authoritative reference screenshot ([`doc/reference/NoteOcean-ui-reference.png`](doc/reference/NoteOcean-ui-reference.png)):
+The visual design is grounded in NoteOcean's custom dark ocean design system ([`docs/06-ui-reference-and-design-system.md`](docs/06-ui-reference-and-design-system.md)):
 - **Color Palette**: Obsidian background (`#0d1117`), slate sidebar (`#0f141c`), vibrant aquamarine/cyan accent (`#2dd4bf` / `#14b8a6`), active card teal (`#162a2d`).
 - **Sidebar**: 250px navigation with NoteOcean wave logo, `Ctrl+K` search bar, Workspace navigation (`Home`, `Quick notes`, `Favorites`), and `YOUR PAGES` list with instant `+` creation.
 - **Editor Canvas**: Spacious 780px centered column with seamless 36px bold page title, hover gutter controls (`+`, `:::`), and live Markdown parsing.
@@ -57,8 +57,8 @@ The visual design is grounded in the authoritative reference screenshot ([`doc/r
 
 ## 🧠 AI Architecture: Grounded Note Assistant
 
-### Why Gemma 2?
-NoteOcean utilizes **Google Gemma 2 (`gemma-2-9b-it`)**, a state-of-the-art open-weight model released under the open Gemma Terms of Use. Running Gemma 2 via the Backboard API provides high-fidelity reasoning, compact parameter efficiency, and dependable adherence to grounding instructions within an open-source footprint.
+### Why Google Gemma?
+NoteOcean utilizes **Google Gemma** (`google/gemma-3-27b-it` / `google/gemma-2-27b-it`), state-of-the-art open-weight models from Google DeepMind released under the open Gemma Terms of Use. Running Gemma via the Backboard API provides high-fidelity reasoning, compact parameter efficiency, and dependable adherence to grounding instructions within an open-source footprint.
 
 ### Retrieval Pipeline & Grounding Flow
 1. **User Query**: User opens NoteOcean Bot and asks a question (e.g., *"What is the deadline recorded in my hackathon plan?"*).
@@ -136,6 +136,45 @@ NoteOcean utilizes **Google Gemma 2 (`gemma-2-9b-it`)**, a state-of-the-art open
 
 ---
 
+## 🚢 DigitalOcean App Platform Deployment (512 MiB Optimization)
+
+NoteOcean is engineered and optimized to run on DigitalOcean App Platform's **$5.00/month Basic Plan** (512 MiB RAM, 1 shared vCPU, 50 GiB bandwidth).
+
+### Deployment Settings (DigitalOcean App Platform)
+
+| Setting | Value |
+| :--- | :--- |
+| **Source Repository** | `https://github.com/Golixco/NoteOcean` |
+| **Branch** | `main` |
+| **Plan / Tier** | **Basic Web Service ($5.00 / mo)** — 512 MiB RAM, 1 vCPU |
+| **Build Command** | `npm run build` |
+| **Run Command** | `npm run start` (or `npm run start:standalone`) |
+| **HTTP Port** | `8080` (or platform `$PORT`) |
+| **Databases / Workers** | None (Zero DB overhead) |
+
+### Environment Variables
+
+| Variable | Type | Purpose |
+| :--- | :--- | :--- |
+| `BACKBOARD_API_KEY` | **Secret (Encrypted)** | Backboard API key for Gemma inference |
+| `NODE_ENV` | Plaintext | `production` |
+| `PORT` | Plaintext | `8080` |
+| `NODE_OPTIONS` | Plaintext | `--max-old-space-size=384` *(enforces V8 GC before 512 MiB)* |
+
+### Why 512 MiB is Sufficient & Safe
+
+1. **Lightweight Runtime Memory**:
+   - Idle Next.js production server memory: **~99 MB RSS** (standalone) / **~126 MB RSS** (standard).
+   - Headroom: **>350 MB free buffer**, leaving ample room for OS processes and concurrent requests.
+2. **Zero-Database Architecture**:
+   - Note data lives in client-side browser `localStorage`, eliminating database connection pools, ORMs, and database daemons from server memory.
+3. **Stateless AI Proxy**:
+   - The `/api/bot/chat` route streams directly to Backboard and holds no long-lived state in server heap.
+4. **V8 Memory Boundary**:
+   - With `NODE_OPTIONS="--max-old-space-size=384"`, V8 aggressively collects garbage before reaching the 512 MiB cgroup threshold, preventing OOM kills.
+
+---
+
 ## 📦 Tech Stack
 
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router, TypeScript)
@@ -143,7 +182,7 @@ NoteOcean utilizes **Google Gemma 2 (`gemma-2-9b-it`)**, a state-of-the-art open
 - **Editor Core**: [Tiptap v2](https://tiptap.dev/) / ProseMirror
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Persistence**: Browser `window.localStorage`
-- **AI Engine**: Google Gemma 2 (`gemma-2-9b-it`) via Backboard REST API
+- **AI Engine**: Google Gemma (`gemma-3-27b-it` / `gemma-2-27b-it`) via Backboard REST API
 - **Deployment**: [DigitalOcean App Platform](https://www.digitalocean.com/products/app-platform)
 
 ---

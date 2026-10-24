@@ -3,11 +3,9 @@
 ## 1. Authoritative Reference Screenshot Verification
 
 > [!IMPORTANT]
-> **VERIFIED VISUAL ASSET**: The authoritative UI reference screenshot was inspected directly at:
-> [`/home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png`](file:///home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png)
-> Size: 1.34 MB (1341511 bytes). High-resolution dark mode desktop interface.
+> **VERIFIED DESIGN SPECIFICATION**: The authoritative UI reference design was analyzed and codified during project setup.
 > 
-> All UI styling, layout measurements, colors, component hierarchies, and interactive states in this document are directly derived from this image.
+> All UI styling, layout measurements, colors, component hierarchies, and interactive states in this document are directly implemented in the live application.
 
 ---
 

@@ -54,8 +54,8 @@
 
 ## 3. Authoritative UI Reference & Visual Design System
 
-The verified visual reference image is located at:
-[`/home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png`](file:///home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png)
+The visual design system and verified specifications are codified at:
+[`docs/06-ui-reference-and-design-system.md`](file:///home/vuld0/NoteOcean/docs/06-ui-reference-and-design-system.md)
 
 > [!NOTE]
 > Detailed measurements, spacing, and CSS token mappings are documented in [`docs/06-ui-reference-and-design-system.md`](file:///home/vuld0/NoteOcean/docs/06-ui-reference-and-design-system.md). Always match the screenshot.
@@ -290,7 +290,7 @@ All detailed specifications are in [`NoteOcean/docs/`](file:///home/vuld0/NoteOc
 
 ## 12. Instructions for the Future AI Coding Agent
 1. **Do not deviate from the zero-login, browser-storage architecture**. Do not introduce databases, ORMs, or auth servers.
-2. **Recreate the UI reference accurately**. Match colors, font sizes, badges, icons, and layout in [`doc/reference/NoteOcean-ui-reference.png`](file:///home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png).
+2. **Recreate the UI reference accurately**. Match colors, font sizes, badges, icons, and layout in [`docs/06-ui-reference-and-design-system.md`](file:///home/vuld0/NoteOcean/docs/06-ui-reference-and-design-system.md).
 3. **Be completely honest about Gemma version and eligibility**: Gemma 2 is our baseline for the general Best Open-Source AI Project category. Only enter Best Use of Gemma 4 if Gemma 4 is genuinely verified.
 4. **Build end-to-end functional features**, not static mockups.
 5. **Follow the priority order**: Editor + Markdown + Slash + Local Persistence first, AI Bot second, Dictation third, Deployment last.

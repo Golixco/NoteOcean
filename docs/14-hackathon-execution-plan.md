@@ -34,7 +34,7 @@ gantt
 - **Goal**: Running Next.js 15 application perfectly matching the visual reference screenshot.
 - **Dependencies**: GitHub repository initialized by user; Node 24.
 - **Steps**:
-  1. Inspect [`NoteOcean/doc/reference/NoteOcean-ui-reference.png`](file:///home/vuld0/NoteOcean/doc/reference/NoteOcean-ui-reference.png) and configure Tailwind CSS variables (`--bg-main: #0d1117`, `--bg-sidebar: #0f141c`, `--accent-cyan: #2dd4bf`).
+  1. Inspect [`docs/06-ui-reference-and-design-system.md`](file:///home/vuld0/NoteOcean/docs/06-ui-reference-and-design-system.md) and configure Tailwind CSS variables (`--bg-main: #0d1117`, `--bg-sidebar: #0f141c`, `--accent-cyan: #2dd4bf`).
   2. Initialize Next.js 15: `npx -y create-next-app@latest ./ --typescript --tailwind --app --no-eslint`.
   3. Install core dependencies:
      `npm install @tiptap/react @tiptap/starter-kit @tiptap/extension-placeholder @tiptap/extension-code-block-lowlight lowlight lucide-react`
