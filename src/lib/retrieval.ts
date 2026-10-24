@@ -123,23 +123,27 @@ export function retrieveRelevantNotes(
   // Sort descending by score
   scored.sort((a, b) => b.score - a.score);
 
-  // Take top 4 most relevant notes
+  // Take top 3 most relevant notes with positive score
   if (scored.length > 0) {
-    return scored.slice(0, 4);
+    return scored.slice(0, 3);
   }
 
-  // Fallback: if no keyword matches, provide active note so user can ask "Summarize this page"
-  const activeNote = notes.find((n) => n.id === activePageId);
-  if (activeNote) {
-    return [
-      {
-        id: activeNote.id,
-        title: activeNote.title,
-        snippet: extractSnippet(activeNote.plainText, [], 400),
-        score: 0.5,
-      },
-    ];
+  // Only fallback to active note if user explicitly asks about current page/summary
+  const isCurrentPageQuery = /\b(this page|this note|current page|current note|summarize|summary)\b/i.test(query);
+  if (isCurrentPageQuery) {
+    const activeNote = notes.find((n) => n.id === activePageId);
+    if (activeNote && activeNote.plainText.trim()) {
+      return [
+        {
+          id: activeNote.id,
+          title: activeNote.title,
+          snippet: extractSnippet(activeNote.plainText, [], 400),
+          score: 1,
+        },
+      ];
+    }
   }
 
+  // If no note matches query terms, return empty array (do NOT pollute context with unrelated notes)
   return [];
 }

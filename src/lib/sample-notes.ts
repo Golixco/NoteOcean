@@ -180,17 +180,17 @@ Key architectural decisions:
 2. Browser-local storage: Notes are persisted directly in localStorage for instant latency and offline resilience.
 3. Single Next.js container: Unified frontend and API route.
 4. AI grounding: Send only relevant note snippets to prevent prompt bloat.
-Fictional Contact Details:
-- Contact Person: Alex Morgan
-- Email: alex@example.com
-- Delivery Address: 742 Evergreen Terrace, Sector 4, Ahmedabad.`,
+Discussion Topics:
+- Core note editor interactions and shortcuts
+- Debounced autosave to browser localStorage
+- Client-side snippet retrieval and grounded Q&A`,
     content: {
       type: "doc",
       content: [
         {
           type: "heading",
           attrs: { level: 2 },
-          content: [{ type: "text", text: "Architecture Sync with Alex & Jordan" }],
+          content: [{ type: "text", text: "Architecture Sync" }],
         },
         {
           type: "paragraph",
@@ -231,7 +231,7 @@ Fictional Contact Details:
         {
           type: "heading",
           attrs: { level: 3 },
-          content: [{ type: "text", text: "Fictional Contact Details" }],
+          content: [{ type: "text", text: "Discussion Topics" }],
         },
         {
           type: "bulletList",
@@ -241,7 +241,7 @@ Fictional Contact Details:
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Contact Person: Alex Morgan" }],
+                  content: [{ type: "text", text: "Core note editor interactions and shortcuts" }],
                 },
               ],
             },
@@ -250,7 +250,7 @@ Fictional Contact Details:
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Email: alex@example.com" }],
+                  content: [{ type: "text", text: "Debounced autosave to browser localStorage" }],
                 },
               ],
             },
@@ -259,7 +259,7 @@ Fictional Contact Details:
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Delivery Address: 742 Evergreen Terrace, Sector 4, Ahmedabad." }],
+                  content: [{ type: "text", text: "Client-side snippet retrieval and grounded Q&A" }],
                 },
               ],
             },

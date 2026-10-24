@@ -15,6 +15,8 @@ import {
 import { NotePage, ChatMessage } from "@/types/note";
 import { retrieveRelevantNotes } from "@/lib/retrieval";
 import { WaveLogo } from "./Icons";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface AIBotDrawerProps {
   pages: NotePage[];
@@ -79,11 +81,18 @@ export function AIBotDrawer({ pages, activePageId, onOpenPage }: AIBotDrawerProp
 
       const data = await response.json();
 
+      // Validate that each displayed citation belongs to a note genuinely retrieved and active in pages
+      const validCitations = (data.citations || []).filter(
+        (cite: { id: string; title: string }) =>
+          pages.some((p) => p.id === cite.id) &&
+          retrievedSnippets.some((s) => s.id === cite.id)
+      );
+
       const assistantMsg: ChatMessage = {
         id: "ast-" + Date.now(),
         role: "assistant",
         content: data.reply || "Sorry, I could not generate a response.",
-        citations: data.citations || [],
+        citations: validCitations,
         timestamp: new Date().toISOString(),
         isError: !response.ok,
       };
@@ -189,9 +198,95 @@ export function AIBotDrawer({ pages, activePageId, onOpenPage }: AIBotDrawerProp
                         : "bg-[#18212c] text-[#cbd5e1] border border-white/[0.06]"
                     }`}
                   >
-                    <div className="whitespace-pre-wrap leading-relaxed space-y-1">
-                      {msg.content}
-                    </div>
+                    {isUser ? (
+                      <div className="whitespace-pre-wrap leading-relaxed">
+                        {msg.content}
+                      </div>
+                    ) : (
+                      <div className="markdown-chat text-xs leading-relaxed space-y-1.5">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h1: ({ children }) => (
+                              <h1 className="text-sm font-bold text-white mt-2 mb-1 border-b border-white/[0.08] pb-1">
+                                {children}
+                              </h1>
+                            ),
+                            h2: ({ children }) => (
+                              <h2 className="text-xs font-bold text-white mt-2 mb-1">
+                                {children}
+                              </h2>
+                            ),
+                            h3: ({ children }) => (
+                              <h3 className="text-xs font-semibold text-[#2dd4bf] mt-1.5 mb-0.5">
+                                {children}
+                              </h3>
+                            ),
+                            p: ({ children }) => (
+                              <p className="mb-1.5 last:mb-0 leading-relaxed text-[#cbd5e1]">
+                                {children}
+                              </p>
+                            ),
+                            strong: ({ children }) => (
+                              <strong className="font-semibold text-white">
+                                {children}
+                              </strong>
+                            ),
+                            em: ({ children }) => (
+                              <em className="italic text-slate-200">
+                                {children}
+                              </em>
+                            ),
+                            ul: ({ children }) => (
+                              <ul className="list-disc list-inside space-y-0.5 my-1.5 pl-0.5 text-[#cbd5e1]">
+                                {children}
+                              </ul>
+                            ),
+                            ol: ({ children }) => (
+                              <ol className="list-decimal list-inside space-y-0.5 my-1.5 pl-0.5 text-[#cbd5e1]">
+                                {children}
+                              </ol>
+                            ),
+                            li: ({ children }) => (
+                              <li className="leading-relaxed">
+                                {children}
+                              </li>
+                            ),
+                            code: ({ inline, className, children, ...props }: any) => {
+                              return inline ? (
+                                <code
+                                  className="bg-[#0f172a] text-[#2dd4bf] px-1.5 py-0.5 rounded text-[11px] font-mono border border-white/[0.08]"
+                                  {...props}
+                                >
+                                  {children}
+                                </code>
+                              ) : (
+                                <pre className="bg-[#0c131d] text-[#e2e8f0] p-2.5 rounded-lg my-2 overflow-x-auto text-[11px] font-mono border border-teal-900/40">
+                                  <code {...props}>{children}</code>
+                                </pre>
+                              );
+                            },
+                            a: ({ href, children }) => (
+                              <a
+                                href={href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[#2dd4bf] underline hover:text-[#5eead4]"
+                              >
+                                {children}
+                              </a>
+                            ),
+                            blockquote: ({ children }) => (
+                              <blockquote className="border-l-2 border-[#14b8a6] pl-2.5 my-1.5 italic text-slate-400">
+                                {children}
+                              </blockquote>
+                            ),
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    )}
 
                     {/* Source Citations */}
                     {msg.citations && msg.citations.length > 0 && (

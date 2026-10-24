@@ -36,11 +36,39 @@ export default function NoteOceanApp() {
       if (storedPages) {
         const parsed = JSON.parse(storedPages);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setPages(parsed);
+          // Safe migration: surgically clean unwanted seeded demo address if present in existing localStorage
+          let hasMigration = false;
+          const sanitized = parsed.map((p: NotePage) => {
+            if (p.plainText && p.plainText.includes("742 Evergreen Terrace")) {
+              hasMigration = true;
+              const updatedPlainText = p.plainText
+                .replace(/-? ?Delivery Address: 742 Evergreen Terrace[^\n]*/gi, "")
+                .trim();
+              
+              const contentStr = JSON.stringify(p.content || {});
+              const cleanContentStr = contentStr.replace(
+                /Delivery Address: 742 Evergreen Terrace[^"]*/gi,
+                "Core note editor interactions and shortcuts"
+              );
+
+              return {
+                ...p,
+                plainText: updatedPlainText,
+                content: JSON.parse(cleanContentStr),
+              };
+            }
+            return p;
+          });
+
+          if (hasMigration) {
+            localStorage.setItem(STORAGE_KEY_PAGES, JSON.stringify(sanitized));
+          }
+
+          setPages(sanitized);
           const initialActive =
-            storedActiveId && parsed.some((p: NotePage) => p.id === storedActiveId)
+            storedActiveId && sanitized.some((p: NotePage) => p.id === storedActiveId)
               ? storedActiveId
-              : parsed[0].id;
+              : sanitized[0].id;
           setActivePageId(initialActive);
           return;
         }
