@@ -31,7 +31,7 @@ export function AIBotDrawer({ pages, activePageId, onOpenPage }: AIBotDrawerProp
       id: "welcome-1",
       role: "assistant",
       content:
-        "Hello! I am **NoteOcean Bot**, an AI assistant powered by **Google Gemma 2 (9B open-weights)**.\n\nI answer questions strictly grounded in your personal saved notes, citing the exact source documents. Ask me anything about your notes!",
+        "Hello! I am **NoteOcean Bot**, an AI assistant powered by **Google Gemma (open-weights)** via Backboard.\n\nI answer questions strictly grounded in your personal saved notes, citing the exact source documents. Ask me anything about your notes!",
       timestamp: new Date().toISOString(),
     },
   ]);
@@ -164,7 +164,7 @@ export function AIBotDrawer({ pages, activePageId, onOpenPage }: AIBotDrawerProp
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-sm text-[#f8fafc]">NoteOcean Bot</span>
                   <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[#153e44] text-[#2dd4bf] border border-[#14b8a6]/40">
-                    Gemma 2 (9B)
+                    Google Gemma
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-400 flex items-center gap-1">
